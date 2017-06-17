@@ -32,6 +32,9 @@ class ValidationMiddleware
 		$route = $request->getAttribute('route');
 		if ($route) {
 			$base_path = $route->getArgument('validator.basePath', $base_path);
+		} else {
+			// delegate to (method) not found
+			return $next($request, $response);
 		}
 		$schema_file = APP_ROOT_PATH . '/generated-api-schema/' . $base_path . '.json';
 		$response = $response->withHeader('Content-Type', 'application/json;charset=utf-8');
