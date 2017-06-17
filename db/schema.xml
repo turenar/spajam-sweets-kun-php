@@ -31,8 +31,9 @@
 		<column name="geom_hash" type="varchar" size="255" required="true"/>
 
 		<index>
-			<index-column name="geom_hash"/>
+			<!--<index-column name="geom_hash"/>-->
 			<index-column name="latitude"/>
+			<index-column name="longitude"/>
 		</index>
 	</table>
 	<table name="review">
@@ -49,7 +50,9 @@
 		<column name="reviewed_at" type="timestamp" required="true"/>
 
 		<index>
-			<index-column name="geom_hash"/>
+			<!--<index-column name="geom_hash"/>-->
+			<index-column name="latitude"/>
+			<index-column name="longitude"/>
 		</index>
 		<foreign-key foreignTable="shop">
 			<reference local="shop_id" foreign="shop_id"/>

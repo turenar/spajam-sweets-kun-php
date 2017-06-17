@@ -61,8 +61,8 @@ $app->get('/shop/search', function (ServerRequestInterface $request, ResponseInt
 
 //	return get_renderer()->renderAsError($response, 403, 'hoge', 'fuga', [$hash_min, $hash_max]);
 	$shops = \ORM\ShopQuery::create()
-		->filterByGeomHash(substr($hash_max, 0, $common_len), \ORM\ShopQuery::GREATER_EQUAL)
-		->filterByGeomHash(substr($hash_min, 0, $common_len), \ORM\ShopQuery::LESS_EQUAL)
+//		->filterByGeomHash(substr($hash_max, 0, $common_len), \ORM\ShopQuery::GREATER_EQUAL)
+//		->filterByGeomHash(substr($hash_min, 0, $common_len), \ORM\ShopQuery::LESS_EQUAL)
 		->filterByLatitude(['min' => $lat_min, 'max' => $lat_max])
 		->filterByLongitude(['min' => $long_min, 'max' => $long_max])
 		->find();
