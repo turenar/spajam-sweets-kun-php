@@ -1,2 +1,18 @@
 review:
-  +fields: []
+  +fields:
+    review_id:
+      type: integer
+    shop_id:
+      type: integer
+    user_id:
+      type: integer
+    rating:
+      type: integer
+    review_text:
+      type: string
+    sweet_type:
+      type: integer
+    latitude:
+      type: float
+    longitude:
+      type: float

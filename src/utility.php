@@ -33,3 +33,13 @@ function format_as_response($data)
 		return $data->format_as_response();
 	}
 }
+
+function start_with($haystack, $needle)
+{
+	return strpos($haystack, $needle) === 0;
+}
+
+function ends_with($haystack, $needle)
+{
+	return !!preg_match('@' . preg_quote($needle, '@') . '$@', $haystack);
+}

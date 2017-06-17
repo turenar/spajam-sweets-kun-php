@@ -1,0 +1,12 @@
+input:
+  shop_id:
+    type: integer
+  rating:
+    type: integer
+  review_text:
+    type: string
+  sweet_type:
+    type: integer
+output:
+  review:
+    +include: review.yaml

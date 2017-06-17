@@ -1,4 +1,12 @@
-input: []
+input:
+  lat_min:
+    type: string
+  lat_max:
+    type: string
+  long_min:
+    type: string
+  long_max:
+    type: string
 output:
   shop:
     +include: shop.yaml
