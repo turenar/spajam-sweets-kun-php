@@ -11,25 +11,36 @@ $texts = [
 $texts_max = count($texts) - 1;
 /** @var \ORM\Authentication[] $auths */
 $auths = \ORM\AuthenticationQuery::create()->find()->toKeyIndex('UserId');
-$auths_max = count($auths) - 1;
+
+$icons = [
+	null,
+	[0],
+	[1],
+	[0, 1, 4],
+	[3],
+	[0, 1, 2, 3, 4],
+	[3, 4],
+];
 
 for ($i = 0; $i < 200; $i++) {
 	$curl = curl_init('http://localhost:8080/review/create');
 	$options = [];
 	$options[CURLOPT_POST] = true;
+	$shop_id = mt_rand(1, 6);
+	$icon_candidates = $icons[$shop_id];
 	$args = [
-		'shop_id' => mt_rand(1, 6),
-		'sweet_type' => mt_rand(1, 5),
+		'shop_id' => $shop_id,
+		'sweet_type' => $icon_candidates[array_rand($icon_candidates)],
 	];
 	if (mt_rand(0, 2)) {
 		$args['rating'] = (int)((mt_rand(1, 5) + mt_rand(1, 5) + mt_rand(1, 5) + mt_rand(1, 5) + mt_rand(1, 5)) / 5);
 	}
 	if (!mt_rand(0, 6)) {
-		$args['review_text'] = $texts[mt_rand(0, $texts_max)];
+		$args['review_text'] = $texts[array_rand($texts)];
 	}
 	$options[CURLOPT_POSTFIELDS] = json_encode($args);
 	$options[CURLOPT_HTTPHEADER] = [
-		'Authorization: bearer ' . $auths[mt_rand(1, $auths_max)]->getToken(),
+		'Authorization: bearer ' . $auths[array_rand($auths)]->getToken(),
 		'Content-Type: application/json',
 	];
 	curl_setopt_array($curl, $options);
