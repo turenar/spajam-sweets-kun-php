@@ -26,7 +26,8 @@ class ValidationMiddleware
 	 */
 	public function __invoke($request, $response, $next)
 	{
-		$base_path = explode('?', $request->getRequestTarget())[0];
+		$base_path = explode('?', $request->getUri()->getPath())[0];
+
 		$route = $request->getAttribute('route');
 		if ($route) {
 			$base_path = $route->getArgument('validator.basePath', $base_path);
