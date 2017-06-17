@@ -13,7 +13,7 @@ require __DIR__ . '/../vendor/autoload.php';
 
 // session_start();
 
-define('APP_ROOT_PATH', __DIR__ . '/..');
+define('APP_ROOT_PATH', realpath(__DIR__) . '/..');
 
 // Instantiate the app
 $settings = require __DIR__ . '/../src/settings.php';
