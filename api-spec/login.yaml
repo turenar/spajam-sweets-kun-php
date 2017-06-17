@@ -1,0 +1,10 @@
+input:
+  user_id:
+    type: string
+  password:
+    type: string
+output:
+  authentication:
+    +fields:
+      token:
+        type: string
