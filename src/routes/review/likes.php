@@ -8,15 +8,16 @@ $app->post('/review/{id:\d+}/likes', function (ServerRequestInterface $request, 
 	$id = $args['id'];
 	/** @var \ORM\User $user */
 	$user = $request->getAttribute('user');
-	$review = \ORM\ReviewQuery::create()
-		->filterByReviewId($id)
-		->findOne();
-	if ($review === null) {
-		return get_renderer()->renderAsError($response, 404, 'Not Found', '指定したレビューが見つかりません');
-	}
 
 	for ($i = 0; $i < TRANSACTION_PATIENCE; $i++) {
-		$result = transaction(function () use ($response, $user, $review) {
+		$result = transaction(function () use ($response, $user, $id) {
+			$review = \ORM\ReviewQuery::create()
+				->filterByReviewId($id)
+				->findOne();
+			if ($review === null) {
+				return get_renderer()->renderAsError($response, 404, 'Not Found', '指定したレビューが見つかりません');
+			}
+
 			$already_liked = \ORM\LikesQuery::create()
 				->filterByUserId($user->getUserId())
 				->filterByReviewId($review->getReviewId())
