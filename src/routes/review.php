@@ -71,4 +71,4 @@ $app->get('/review/{id:\d+}', function (ServerRequestInterface $request, Respons
 	}
 
 	return get_renderer()->render($response, ['review' => render_as_json($review)]);
-});
+})->setArgument('validator.basePath', 'review');
