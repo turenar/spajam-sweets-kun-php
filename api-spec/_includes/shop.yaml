@@ -11,3 +11,4 @@ shop:
     review:
       +include: review.yaml
       array: true
+      required: false

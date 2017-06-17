@@ -1,0 +1,5 @@
+input: []
+output:
+  shop:
+    +include: shop.yaml
+    array: true
