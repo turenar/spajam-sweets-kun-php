@@ -66,6 +66,9 @@ class ValidationMiddleware
 
 		/** @var ResponseInterface $real_response */
 		$real_response = $next($request, $response);
+		if ($real_response->getStatusCode() >= 300) {
+			return $real_response;
+		}
 		$real_body = $real_response->getBody();
 		$real_body->rewind();
 		$validator = new Validator();
