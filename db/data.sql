@@ -4,7 +4,7 @@ INSERT INTO user (user_id)
 VALUES (1);
 
 INSERT INTO authentication (user_id, email, password, token)
-VALUES (1, 'hoge@example.com', '$2y$10$ulqpqhnysOSiV1CiFlFMXeSC2vl4YzT7wNUtUAYmPF/GqGxuZSyAm', 'token-string');
+VALUES (1, 'hoge@example.com', '$2y$10$ulqpqhnysOSiV1CiFlFMXeSC2vl4YzT7wNUtUAYmPF/GqGxuZSyAm', 'abcdef123456789');
 
 INSERT INTO shop (shop_id, name, open_time, close_time, address, latitude, longitude, geom_hash)
 VALUES
