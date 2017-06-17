@@ -1,5 +1,4 @@
 <?php
-namespace middleware;
 
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Body;

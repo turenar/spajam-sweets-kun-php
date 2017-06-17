@@ -1,34 +1,36 @@
 {
-    "name": "turenar/spajam-sweets-kun-php",
-    "description": "すいーつくん バックエンド",
-    "keywords": [],
-    "homepage": "https://github.com/turenar/spajam-sweets-kun-php",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Turenar",
-            "email": "snswinhaiku.lo@gmail.com",
-            "homepage": "https://github.com/turenar"
-        }
-    ],
-    "require": {
-        "php": ">=7.0",
-        "ext-yaml": "^2.0",
-        "ext-pdo": "^7.0",
-        "slim/slim": "^3.1",
-        "monolog/monolog": "^1.17",
-        "justinrainbow/json-schema": "~2.0",
-        "propel/propel": "~2.0@dev"
-    },
-    "require-dev": {
-    },
-    "autoload": {
-        "psr-0": {
-            "ORM\\": "db/generated-classes"
-        }
-    },
+	"name": "turenar/spajam-sweets-kun-php",
+	"description": "すいーつくん バックエンド",
+	"keywords": [],
+	"homepage": "https://github.com/turenar/spajam-sweets-kun-php",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Turenar",
+			"email": "snswinhaiku.lo@gmail.com",
+			"homepage": "https://github.com/turenar"
+		}
+	],
+	"require": {
+		"php": ">=7.0",
+		"ext-yaml": "^2.0",
+		"ext-pdo": "^7.0",
+		"slim/slim": "^3.1",
+		"monolog/monolog": "^1.17",
+		"justinrainbow/json-schema": "~2.0",
+		"propel/propel": "~2.0@dev"
+	},
+	"require-dev": {
+	},
+	"autoload": {
+		"psr-4": {
+			"": "src/lib"
+		},
+		"psr-0": {
+			"ORM\\": "db/generated-classes"
+		}
+	},
 	"scripts": {
-        "start": "php -S 0.0.0.0:8080 -t public public/index.php"
+		"start": "php -S 0.0.0.0:8080 -t public public/index.php"
 	}
-
 }

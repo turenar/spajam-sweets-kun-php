@@ -1,8 +1,11 @@
 <?php
-namespace middleware;
+
+namespace Middleware;
 
 use JsonSchema\Validator;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Slim\Http\Request;
 
 /**
  * リクエストおよびレスポンスをjson-schemaを使用してvalidateする。
@@ -10,34 +13,25 @@ use Psr\Http\Message\ResponseInterface;
  * tools/GenerateApiSchema.phpを使用してyamlファイルからjson-schemaを生成する。
  * @package middleware
  */
-class RequestValidateMiddleware
+class ValidationMiddleware
 {
-	/**
-	 * RequestValidateMiddleware constructor.
-	 * @param string|null $json_name
-	 *   チェック用のyamlファイルパス (generated-api-schemaから.yamlを除いた相対パス)。
-	 *   nullの場合は、リクエストパスを使用する。
-	 * @param bool $check_out 出力をチェックするかどうか (デバッグ用、trueを強く推奨)
-	 */
-	public function __construct($json_name = null, $check_out = true)
-	{
-		$this->yaml_path = $json_name;
-		$this->check_out = $check_out;
-	}
-
 	/**
 	 * Request Validation
 	 *
-	 * @param  \Psr\Http\Message\ServerRequestInterface $request PSR7 request
-	 * @param  \Psr\Http\Message\ResponseInterface $response PSR7 response
-	 * @param  callable $next Next middleware
+	 * @param ServerRequestInterface $request PSR7 request
+	 * @param ResponseInterface $response PSR7 response
+	 * @param callable $next Next middleware
 	 *
-	 * @return \Psr\Http\Message\ResponseInterface
+	 * @return ResponseInterface
 	 */
 	public function __invoke($request, $response, $next)
 	{
-		$request_target = $this->yaml_path ?? explode('?', $request->getRequestTarget())[0];
-		$schema_file = APP_ROOT_PATH . '/generated-api-schema/' . $request_target . '.json';
+		$base_path = explode('?', $request->getRequestTarget())[0];
+		$route = $request->getAttribute('route');
+		if ($route) {
+			$base_path = $route->getArgument('validator.basePath', $base_path);
+		}
+		$schema_file = APP_ROOT_PATH . '/generated-api-schema/' . $base_path . '.json';
 		$response = $response->withHeader('Content-Type', 'application/json;charset=utf-8');
 
 		if (!file_exists($schema_file)) {
@@ -71,22 +65,18 @@ class RequestValidateMiddleware
 
 		/** @var ResponseInterface $real_response */
 		$real_response = $next($request, $response);
-		if (!$this->check_out) {
+		$real_body = $real_response->getBody();
+		$real_body->rewind();
+		$validator = new Validator();
+		$validator->check(json_decode($real_body->getContents()), $schema->output);
+		if ($validator->isValid()) {
 			return $real_response;
 		} else {
-			$real_body = $real_response->getBody();
-			$real_body->rewind();
-			$validator = new Validator();
-			$validator->check(json_decode($real_body->getContents()), $schema->output);
-			if ($validator->isValid()) {
-				return $real_response;
-			} else {
-				$extra = [];
-				foreach ($validator->getErrors() as $error) {
-					$extra[] = sprintf('[%s] %s', $error['property'], $error['message']);
-				}
-				return get_renderer()->renderAsError($response, 500, 'Invalid request', 'output validation failed', $extra);
+			$extra = [];
+			foreach ($validator->getErrors() as $error) {
+				$extra[] = sprintf('[%s] %s', $error['property'], $error['message']);
 			}
+			return get_renderer()->renderAsError($response, 500, 'Invalid request', 'output validation failed', $extra);
 		}
 	}
 }

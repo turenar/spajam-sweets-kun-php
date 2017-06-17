@@ -1,5 +1,6 @@
 <?php
-namespace middleware;
+
+namespace Middleware;
 
 use ORM\UserQuery;
 
