@@ -18,6 +18,7 @@ function get_logger_from_container($container)
 		$logger = new Monolog\Logger($settings['name']);
 		$logger->pushProcessor(get_logger_uid_processor());
 		$logger->pushHandler(new Monolog\Handler\StreamHandler($settings['path'], $settings['level']));
+		\Monolog\Registry::addLogger($logger, '__default__');
 	}
 	return $logger;
 }
@@ -39,7 +40,8 @@ function show_exception($logger, $e)
 }
 
 $container = $app->getContainer();
-
+// register logger!
+get_logger_from_container($container);
 // monolog
 $container['logger'] = function ($c) {
 	return get_logger_from_container($c);
