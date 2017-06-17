@@ -1,5 +1,12 @@
 <?php
 // Routes
 
-require_once __DIR__ . '/routes/shop.php';
-require_once __DIR__ . '/routes/auth.php';
+$rii = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(__DIR__ . '/routes/'));
+foreach ($rii as $file) {
+	if ($file->isDir()) {
+		continue;
+	}
+	if (ends_with($file->getPathname(), '.php')) {
+		require_once $file->getPathname();
+	}
+};
