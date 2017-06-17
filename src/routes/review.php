@@ -21,11 +21,11 @@ $app->post('/review/create', function (ServerRequestInterface $request, Response
 		return get_renderer()->renderAsError($response, 400, 'Invalid shop id', '指定した店が見つかりません');
 	}
 
-	// TODO
 	$lat = $shop->getLatitude();
 	$long = $shop->getLongitude();
-	$quadKey = new QuadKey();
-	$hash = $quadKey->latLngToQuadKey($lat, $long, QUAD_KEY_LEVEL);
+	$quad_key = new QuadKey();
+	$randomized = randomize_lat_long($quad_key, $lat, $long, SPAWN_RANDOMIZE_RANGE);
+	$hash = $quad_key->latLngToQuadKey($randomized[0], $randomized[1], QUAD_KEY_LEVEL);
 	$review = new \ORM\Review();
 	$review
 		->setShopId($shop->getShopId())
