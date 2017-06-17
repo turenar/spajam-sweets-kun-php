@@ -25,7 +25,7 @@ $app->post('/review/create', function (ServerRequestInterface $request, Response
 	$lat = $shop->getLatitude();
 	$long = $shop->getLongitude();
 	$quadKey = new QuadKey();
-	$hash = $quadKey->latLngToQuadKey($lat, $long, 18);
+	$hash = $quadKey->latLngToQuadKey($lat, $long, QUAD_KEY_LEVEL);
 	$review = new \ORM\Review();
 	$review
 		->setShopId($shop->getShopId())
