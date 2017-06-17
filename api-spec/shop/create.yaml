@@ -1,0 +1,18 @@
+input:
+  name:
+    type: string
+  open_time:
+    type: time
+    required: false
+  close_time:
+    type: time
+    required: false
+  address:
+    type: string
+  latitude:
+    type: float
+  longitude:
+    type: float
+output:
+  shop:
+    +include: shop.yaml

@@ -3,6 +3,29 @@
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
+$app->post('/shop/create', function (ServerRequestInterface $request, ResponseInterface $response, $args) {
+	$data = $request->getParsedBody();
+	$name = $data['name'];
+	$open_time = $data['open_time'] ?? null;
+	$close_time = $data['close_time'] ?? null;
+	$address = $data['address'];
+	$latitude = $data['latitude'];
+	$longitude = $data['longitude'];
+
+	$quad_key = new QuadKey();
+	$shop = new \ORM\Shop();
+	$shop
+		->setName($name)
+		->setOpenTime($open_time)
+		->setCloseTime($close_time)
+		->setAddress($address)
+		->setLatitude($latitude)
+		->setLongitude($longitude)
+		->setGeomHash($quad_key->latLngToQuadKey($latitude, $longitude, QUAD_KEY_LEVEL))
+		->save();
+	return get_renderer()->render($response, ['shop' => render_as_json($shop)]);
+});
+
 $app->get('/shop/{id:\d+}', function (ServerRequestInterface $request, ResponseInterface $response, $args) {
 	$id = $args['id'];
 
