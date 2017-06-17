@@ -59,3 +59,15 @@ $app->get('/review/search', function (ServerRequestInterface $request, ResponseI
 
 	return get_renderer()->render($response, ['review' => render_as_json($reviews)]);
 });
+
+$app->get('/review/{id:\d+}', function (ServerRequestInterface $request, ResponseInterface $response, $args) {
+	$id = $args['id'];
+	$review = \ORM\ReviewQuery::create()
+		->filterByReviewId($id)
+		->findOne();
+	if ($review === null) {
+		return get_renderer()->renderAsError($response, 404, 'Not Found', '指定したレビューが見つかりません');
+	}
+
+	return get_renderer()->render($response, ['review' => render_as_json($review)]);
+});
