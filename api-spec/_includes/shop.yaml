@@ -1,0 +1,13 @@
+shop:
+  +fields:
+    name:
+      type: string
+    address:
+      type: string
+    latitude:
+      type: string
+    longitude:
+      type: string
+    review:
+      +include: review.yaml
+      array: true

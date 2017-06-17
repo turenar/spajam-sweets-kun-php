@@ -1,0 +1,4 @@
+input: []
+output:
+  shop:
+    +include: shop.yaml
