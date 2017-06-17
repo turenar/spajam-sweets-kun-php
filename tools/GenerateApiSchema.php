@@ -125,6 +125,7 @@ function generate_field_schema($type)
 		case 'integer':
 			return ['type' => 'integer'];
 		case 'number':
+		case 'float':
 			return ['type' => 'number'];
 		case 'date':
 			return ['type' => 'string', 'format' => 'date'];
