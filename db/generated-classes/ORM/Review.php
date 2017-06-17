@@ -26,6 +26,7 @@ class Review extends BaseReview
 			'rating' => $this->getRating(),
 			'review_text' => $this->getReviewText(),
 			'sweet_type' => $this->getSweetType(),
+			'like' => $this->getLike(),
 			'latitude'=>$this->getLatitude(),
 			'longitude' => $this->getLongitude(),
 		];
