@@ -5,9 +5,9 @@ shop:
     address:
       type: string
     latitude:
-      type: string
+      type: number
     longitude:
-      type: string
+      type: number
     review:
       +include: review.yaml
       array: true
