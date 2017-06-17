@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<database xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		  xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/propelorm/Propel2/master/resources/xsd/database.xsd"
+		  name="fresh_fridge" namespace="ORM">
+	<table name="family">
+		<column name="family_id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
+		<column name="token" type="varchar" size="255" required="true"/>
+        <column name="room_id" type="varchar" size="255" /> 
+		<unique>
+			<unique-column name="token"/>
+		</unique>
+	</table>
+	<table name="user">
+		<column name="user_id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
+		<column name="family_id" type="integer" required="true"/>
+		<column name="access_token" type="varchar" size="255" required="true"/>
+        <column name="line_id" type="varchar" size="64" />
+		<unique>
+			<unique-column name="access_token"/>
+		</unique>
+		<foreign-key foreignTable="family">
+			<reference local="family_id" foreign="family_id"/>
+		</foreign-key>
+	</table>
+	<table name="user_item">
+		<column name="user_item_id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
+		<column name="family_id" type="integer" required="true"/>
+		<column name="item_id" type="integer" required="false"/>
+		<column name="item_name" type="varchar" size="255" required="true"/>
+		<column name="expire_date" type="timestamp" required="true"/>
+		<column name="price" type="integer"/>
+		<column name="expire_push_done_flag" type="boolean" required="true" default="0"/>
+		<index>
+			<index-column name="family_id"/>
+			<index-column name="expire_date"/>
+			<index-column name="expire_push_done_flag"/>
+		</index>
+		<foreign-key foreignTable="family">
+			<reference local="family_id" foreign="family_id"/>
+		</foreign-key>
+		<foreign-key foreignTable="item_master">
+			<reference local="item_id" foreign="item_id"/>
+		</foreign-key>
+	</table>
+	<table name="item_master">
+		<column name="item_id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
+		<column name="item_name" type="varchar" required="true"/>
+		<column name="default_expire_days" type="integer"/>
+		<index>
+			<index-column name="item_name"/>
+		</index>
+	</table>
+	<table name="item_search">
+		<column name="search_id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
+		<column name="item_id" type="integer" required="true"/>
+		<column name="search_word" type="varchar" required="true">
+			<vendor type="mysql">
+				<parameter name="Collate" value="utf8_unicode_ci"/>
+			</vendor>
+		</column>
+		<index>
+			<index-column name="search_word"/>
+		</index>
+		<foreign-key foreignTable="item_master">
+			<reference local="item_id" foreign="item_id"/>
+		</foreign-key>
+	</table>
+</database>
