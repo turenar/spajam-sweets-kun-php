@@ -36,6 +36,7 @@ $app->post('/review/create', function (ServerRequestInterface $request, Response
 		->setLatitude($lat)
 		->setLongitude($long)
 		->setGeomHash($hash)
+		->setReviewedAt(time())
 		->save();
 	return get_renderer()->render($response, ['review' => $review->render()]);
 })->add(new AuthMiddleware());

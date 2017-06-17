@@ -44,6 +44,7 @@
 		<column name="latitude" type="double" required="true"/>
 		<column name="longitude" type="double" required="true"/>
 		<column name="geom_hash" type="varchar" size="255" required="true"/>
+		<column name="reviewed_at" type="timestamp" required="true"/>
 
 		<index>
 			<index-column name="geom_hash"/>
