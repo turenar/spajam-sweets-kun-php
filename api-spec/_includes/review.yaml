@@ -8,8 +8,10 @@ review:
       type: integer
     rating:
       type: integer
+      required: false
     review_text:
       type: string
+      required: false
     sweet_type:
       type: integer
     latitude:
