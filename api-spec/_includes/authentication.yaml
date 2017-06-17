@@ -1,0 +1,6 @@
+authentication:
+  +fields:
+    user_id:
+      type: integer
+    token:
+      type: string

@@ -4,13 +4,27 @@
 		  name="spajam" namespace="ORM">
 	<table name="user">
 		<column name="user_id" type="integer" primaryKey="true" autoIncrement="true"/>
+	</table>
+	<table name="authentication">
+		<column name="user_id" type="integer" primaryKey="true"/>
+		<column name="email" type="varchar" size="255"/>
+		<column name="password" type="varchar" size="255"/>
 		<column name="token" type="varchar" size="255"/>
+		<unique>
+			<unique-column name="email"/>
+		</unique>
 		<unique>
 			<unique-column name="token"/>
 		</unique>
+		<foreign-key foreignTable="user">
+			<reference local="user_id" foreign="user_id"/>
+		</foreign-key>
 	</table>
 	<table name="shop">
 		<column name="shop_id" type="integer" primaryKey="true" autoIncrement="true"/>
 		<column name="name" type="varchar" size="255"/>
+		<column name="address" type="varchar" size="255"/>
+		<column name="latitude" type="double"/>
+		<column name="longitude" type="double"/>
 	</table>
 </database>
