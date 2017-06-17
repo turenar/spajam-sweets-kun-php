@@ -6,5 +6,5 @@ rm -rf \
 	generated-api-schema/
 
 tools/prepare.sh
-tools/migrate_db.sh
+tools/reset_db.sh
 rsync -rva --delete --delete-excluded --exclude=.git ./ /var/www/sweetskun/
