@@ -1,0 +1,24 @@
+propel:
+  general:
+    project: spajam
+  paths:
+    schemaDir: db
+    outputDir: db
+    phpDir: db/generated-classes
+    phpConfDir: db/generated-conf
+    migrationDir: db/generated-migrations
+    sqlDir: db/generated-sql
+  database:
+    connections:
+      spajam:
+        adapter: mysql
+        # classname: Propel\Runtime\Connection\DebugPDO
+        dsn: mysql:host=localhost;dbname=spajam
+        user: spajam
+        password: Ers)\Tedr=<^-HxYzSMyGqfu8HyNZaSx
+  runtime:
+    defaultConnection: spajam
+    connections: [spajam]
+  generator:
+    defaultConnection: spajam
+    connections: [spajam]
