@@ -1,5 +1,7 @@
 shop:
   +fields:
+    shop_id:
+      type: integer
     name:
       type: string
     address:
