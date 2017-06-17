@@ -14,4 +14,4 @@ $app->get('/shop/{id}', function (ServerRequestInterface $request, ResponseInter
 			'review' => [],
 		]
 	]);
-});
+})->setArgument('validator.basePath', 'shop');
