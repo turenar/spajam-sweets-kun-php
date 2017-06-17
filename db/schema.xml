@@ -3,13 +3,13 @@
 		  xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/propelorm/Propel2/master/resources/xsd/database.xsd"
 		  name="spajam" namespace="ORM">
 	<table name="user">
-		<column name="user_id" type="integer" primaryKey="true" autoIncrement="true"/>
+		<column name="user_id" type="integer" primaryKey="true" autoIncrement="true" required="true"/>
 	</table>
 	<table name="authentication">
-		<column name="user_id" type="integer" primaryKey="true"/>
-		<column name="email" type="varchar" size="255"/>
-		<column name="password" type="varchar" size="255"/>
-		<column name="token" type="varchar" size="255"/>
+		<column name="user_id" type="integer" primaryKey="true" required="true"/>
+		<column name="email" type="varchar" size="255" required="true"/>
+		<column name="password" type="varchar" size="255" required="true"/>
+		<column name="token" type="varchar" size="255" required="true"/>
 		<unique>
 			<unique-column name="email"/>
 		</unique>
@@ -21,14 +21,14 @@
 		</foreign-key>
 	</table>
 	<table name="shop">
-		<column name="shop_id" type="integer" primaryKey="true" autoIncrement="true"/>
-		<column name="name" type="varchar" size="255"/>
-		<column name="open_time" type="time"/>
-		<column name="close_time" type="time"/>
-		<column name="address" type="varchar" size="255"/>
-		<column name="latitude" type="double"/>
-		<column name="longitude" type="double"/>
-		<column name="geom_hash" type="varchar" size="255"/>
+		<column name="shop_id" type="integer" primaryKey="true" autoIncrement="true" required="true"/>
+		<column name="name" type="varchar" size="255" required="true"/>
+		<column name="open_time" type="time" required="false"/>
+		<column name="close_time" type="time" required="false"/>
+		<column name="address" type="varchar" size="255" required="true"/>
+		<column name="latitude" type="double" required="true"/>
+		<column name="longitude" type="double" required="true"/>
+		<column name="geom_hash" type="varchar" size="255" required="true"/>
 
 		<index>
 			<index-column name="geom_hash"/>
@@ -36,14 +36,14 @@
 	</table>
 	<table name="review">
 		<column name="review_id" type="integer" primaryKey="true" autoIncrement="true"/>
-		<column name="shop_id" type="integer"/>
-		<column name="user_id" type="integer"/>
-		<column name="rating" type="integer"/>
-		<column name="review_text" type="varchar" size="255"/>
-		<column name="sweet_type" type="integer"/>
-		<column name="latitude" type="double"/>
-		<column name="longitude" type="double"/>
-		<column name="geom_hash" type="varchar" size="255"/>
+		<column name="shop_id" type="integer" required="true"/>
+		<column name="user_id" type="integer" required="true"/>
+		<column name="rating" type="integer" required="false"/>
+		<column name="review_text" type="varchar" size="255" required="false"/>
+		<column name="sweet_type" type="integer" required="true"/>
+		<column name="latitude" type="double" required="true"/>
+		<column name="longitude" type="double" required="true"/>
+		<column name="geom_hash" type="varchar" size="255" required="true"/>
 
 		<index>
 			<index-column name="geom_hash"/>
