@@ -19,11 +19,13 @@ class AuthMiddleware
 	 */
 	public function __invoke($request, $response, $next)
 	{
-		$authorization = $request->getHeaderLine('Authorization');
-		if (!$authorization) {
+		$authorizations = $request->getHeader('Authorization');
+		if (!$authorizations) {
 			return $this->failAuth($response);
 		}
-		$matched = preg_match('s@^bearer\s+([a-zA-Z0-9]+)$@i', $authorization, $matches);
+		$authorization = end($authorizations);
+		$matched = preg_match(/** @lang regexp */
+			'/^bearer\s+([a-zA-Z0-9]+)\s*$/i', $authorization, $matches);
 		if (!$matched) {
 			return $this->failAuth($response);
 		}
