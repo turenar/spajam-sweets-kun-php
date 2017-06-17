@@ -1,0 +1,13 @@
+input:
+  lat_min:
+    type: float
+  lat_max:
+    type: float
+  long_min:
+    type: float
+  long_max:
+    type: float
+output:
+  review:
+    +include: review.yaml
+    array: true
