@@ -53,7 +53,7 @@ $app->get('/review/search', function (ServerRequestInterface $request, ResponseI
 	$hash_max = $quad_key->latLngToQuadKey($lat_max, $long_max, QUAD_KEY_LEVEL);
 //	return get_renderer()->renderAsError($response, 403, 'hoge', 'fuga', [$hash_min, $hash_max]);
 	$reviews = \ORM\ReviewQuery::create()
-		->filterByGeomHash(['min' => $hash_min, 'max' => $hash_max])
+//		->filterByGeomHash(['min' => $hash_min, 'max' => $hash_max])
 		->filterByLatitude(['min' => $lat_min, 'max' => $lat_max])
 		->filterByLongitude(['min' => $long_min, 'max' => $long_max])
 		->find();
