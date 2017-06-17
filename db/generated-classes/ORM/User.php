@@ -16,5 +16,11 @@ use ORM\Base\User as BaseUser;
  */
 class User extends BaseUser
 {
-
+	public function render()
+	{
+		return [
+			'user_id' => $this->getUserId(),
+			'name' => $this->getName()
+		];
+	}
 }

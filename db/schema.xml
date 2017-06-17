@@ -4,6 +4,7 @@
 		  name="spajam" namespace="ORM" identifierQuoting="true">
 	<table name="user">
 		<column name="user_id" type="integer" primaryKey="true" autoIncrement="true" required="true"/>
+		<column name="name" type="varchar" required="false"/>
 	</table>
 	<table name="authentication">
 		<column name="user_id" type="integer" primaryKey="true" required="true"/>
