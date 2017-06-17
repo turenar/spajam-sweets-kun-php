@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/bootstrap.php';
 
 if ($argc != 3) {
 	fprintf(STDERR, "specify lat long\n");
@@ -10,4 +10,4 @@ $lat = $argv[1];
 $long = $argv[2];
 
 $quad_key = new QuadKey();
-echo $quad_key->latLngToQuadKey($lat, $long, 17);
+echo $quad_key->latLngToQuadKey($lat, $long, QUAD_KEY_LEVEL);
