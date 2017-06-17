@@ -2,10 +2,11 @@
 
 namespace Middleware;
 
+use JsonSchema\Constraints\Constraint;
 use JsonSchema\Validator;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Slim\Http\Request;
+use Symfony\Component\Validator\Constraints\Valid;
 
 /**
  * リクエストおよびレスポンスをjson-schemaを使用してvalidateする。
@@ -18,7 +19,7 @@ class ValidationMiddleware
 	/**
 	 * Request Validation
 	 *
-	 * @param ServerRequestInterface $request PSR7 request
+	 * @param Request $request PSR7 request
 	 * @param ResponseInterface $response PSR7 response
 	 * @param callable $next Next middleware
 	 *
@@ -41,26 +42,29 @@ class ValidationMiddleware
 		}
 
 		$schema = json_decode(file_get_contents($schema_file));
-		if ($request->getMethod() !== 'GET') {
+		if ($request->getMethod() === 'GET') {
+			$data = $request->getQueryParams();
+			$validator = new Validator();
+			$validator->validate($data, $schema->input,
+				Constraint::CHECK_MODE_COERCE_TYPES | Constraint::CHECK_MODE_TYPE_CAST);
+			if (!$validator->isValid()) {
+				return $this->failValidation($response, $validator, 'query validation failed');
+			}
+			$request = $request->withQueryParams($data);
+		} else {
 			$content_type = $request->getMediaType();
 			if ($content_type !== 'application/json') {
 				return get_renderer()->renderAsError($response, 400, 'Invalid request', 'malformed content-type');
 			}
-			// objectじゃないとvalidatorが通らないの悲しい
-			$data = json_decode($request->getBody());
-
+			$data = $request->getParsedBody();
 			if ($data === null) {
 				return get_renderer()->renderAsError($response, 400, 'Invalid request', 'malformed json');
 			}
 
 			$validator = new Validator();
-			$validator->check($data, $schema->input);
+			$validator->validate($data, $schema->input, Constraint::CHECK_MODE_TYPE_CAST);
 			if (!$validator->isValid()) {
-				$extra = [];
-				foreach ($validator->getErrors() as $error) {
-					$extra[] = sprintf('[%s] %s', $error['property'], $error['message']);
-				}
-				return get_renderer()->renderAsError($response, 400, 'Invalid request', 'input validation failed', $extra);
+				return $this->failValidation($response, $validator, 'input validation failed');
 			}
 		}
 
@@ -82,5 +86,21 @@ class ValidationMiddleware
 			}
 			return get_renderer()->renderAsError($response, 500, 'Invalid request', 'output validation failed', $extra);
 		}
+	}
+
+	/**
+	 * @param ResponseInterface $response
+	 * @param Validator $validator
+	 * @param string $reason
+	 * @return ResponseInterface
+	 */
+	protected function failValidation($response, $validator, $reason): ResponseInterface
+	{
+		$extra = [];
+		foreach ($validator->getErrors() as $error) {
+			$extra[] = sprintf('[%s] %s', $error['property'], $error['message']);
+		}
+		return get_renderer()->renderAsError($response, 400, 'Invalid request', $reason,
+			$extra);
 	}
 }
