@@ -49,12 +49,20 @@ $app->get('/shop/search', function (ServerRequestInterface $request, ResponseInt
 	$long_min = $data['long_min'];
 	$long_max = $data['long_max'];
 
-	$quad_key = new QuadKey();
+	$quad_key = new QuadKey($lat_min, $long_min);
 	$hash_min = $quad_key->latLngToQuadKey($lat_min, $long_min, QUAD_KEY_LEVEL);
 	$hash_max = $quad_key->latLngToQuadKey($lat_max, $long_max, QUAD_KEY_LEVEL);
+
+	for ($common_len = 0; $common_len < strlen($hash_max); $common_len++) {
+		if (strncmp($hash_min, $hash_max, $common_len) !== 0) {
+			break;
+		}
+	}
+
 //	return get_renderer()->renderAsError($response, 403, 'hoge', 'fuga', [$hash_min, $hash_max]);
 	$shops = \ORM\ShopQuery::create()
-		->filterByGeomHash(['min' => $hash_min, 'max' => $hash_max])
+		->filterByGeomHash(substr($hash_max, 0, $common_len), \ORM\ShopQuery::GREATER_EQUAL)
+		->filterByGeomHash(substr($hash_min, 0, $common_len), \ORM\ShopQuery::LESS_EQUAL)
 		->filterByLatitude(['min' => $lat_min, 'max' => $lat_max])
 		->filterByLongitude(['min' => $long_min, 'max' => $long_max])
 		->find();
