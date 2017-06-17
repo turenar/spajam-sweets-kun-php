@@ -6,6 +6,7 @@ use Propel\Runtime\Collection\ObjectCollection;
 const QUAD_KEY_LEVEL = 18;
 const SPAWN_RANDOMIZE_RANGE = 300;
 const RANDOM_ROUND = 5;
+const TRANSACTION_PATIENCE = 10;
 
 function transaction($callable)
 {

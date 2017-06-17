@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <database xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		  xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/propelorm/Propel2/master/resources/xsd/database.xsd"
-		  name="spajam" namespace="ORM">
+		  name="spajam" namespace="ORM" identifierQuoting="true">
 	<table name="user">
 		<column name="user_id" type="integer" primaryKey="true" autoIncrement="true" required="true"/>
 	</table>
@@ -44,6 +44,7 @@
 		<column name="latitude" type="double" required="true"/>
 		<column name="longitude" type="double" required="true"/>
 		<column name="geom_hash" type="varchar" size="255" required="true"/>
+		<column name="like" type="integer" default="0"/>
 		<column name="reviewed_at" type="timestamp" required="true"/>
 
 		<index>
@@ -55,5 +56,10 @@
 		<foreign-key foreignTable="user">
 			<reference local="user_id" foreign="user_id"/>
 		</foreign-key>
+	</table>
+	<table name="likes">
+		<column name="review_id" type="integer" primaryKey="true"/>
+		<column name="user_id" type="integer" primaryKey="true"/>
+		<column name="liked_at" type="timestamp"/>
 	</table>
 </database>
