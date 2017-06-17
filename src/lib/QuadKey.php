@@ -20,6 +20,7 @@ class QuadKey
 {
 
 	const M_ON_EQ = 40075016.68557849;   //地球を半径6378.137kmの球として赤道での周(m)
+	const M_PER_DEGREE = 111319.49079327357;
 	const DEG_TO_RAD = 0.017453292519943295; //度をラジアンにするための定数
 
 	const EarthRadius = 6378137;
@@ -307,5 +308,12 @@ class QuadKey
 		list($x, $y) = $this->quadKeyToTileXY($quadKey);
 		list($pixelX, $pixelY) = $this->tileXYToPixelXY($x, $y);
 		return $this->pixelXYToLatLng($pixelX, $pixelY, strlen($quadKey));
+	}
+
+	public function getMeterPerLatLngDegree($lat, $long)
+	{
+		$lat_m_per_deg = self::M_PER_DEGREE;
+		$lng_m_per_deg = cos($lat * self::DEG_TO_RAD) * self::M_PER_DEGREE;
+		return [$lat_m_per_deg, $lng_m_per_deg];
 	}
 }
