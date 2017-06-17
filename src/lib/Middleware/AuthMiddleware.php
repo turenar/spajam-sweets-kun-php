@@ -19,14 +19,37 @@ class AuthMiddleware
 	 */
 	public function __invoke($request, $response, $next)
 	{
-		$access_token = $request->getHeader('x-access-token');
+		$authorization = $request->getHeaderLine('Authorization');
+		if (!$authorization) {
+			return $this->failAuth($response);
+		}
+		$matched = preg_match('s@^bearer\s+([a-zA-Z0-9]+)$@i', $authorization, $matches);
+		if (!$matched) {
+			return $this->failAuth($response);
+		}
+		$token = $matches[1];
 		$user = UserQuery::create()
-			->filterByAccessToken($access_token)
+			->useAuthenticationQuery()
+			->filterByToken($token)
+			->endUse()
 			->findOne();
 		if ($user === null) {
-			return get_renderer()->renderAsError($response, 403, 'Access denied', 'invalid token');
+			return $this->failAuthToken($response);
 		}
 		$request = $request->withAttribute('user', $user);
 		return $next($request, $response);
 	}
+
+	protected function failAuth($response)
+	{
+		return get_renderer()->renderAsError($response, 401, 'Authorization required', 'invalid request')
+			->withHeader('WWW-Authenticate', 'Bearer realm="auth_required"');
+	}
+
+	protected function failAuthToken($response)
+	{
+		return get_renderer()->renderAsError($response, 401, 'Authorization required', 'invalid token')
+			->withHeader('WWW-Authenticate', 'Bearer realm="auth_required" error="invalid_token"');
+	}
+
 }

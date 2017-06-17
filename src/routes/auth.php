@@ -8,14 +8,14 @@ $app->post('/login', function (ServerRequestInterface $request, ResponseInterfac
 	$mail = $data['email'];
 	$password = $data['password'];
 
-	$user = \ORM\UserQuery::create()
+	$authentication = \ORM\AuthenticationQuery::create()
 		->filterByEmail($mail)
 		->findOne();
-	if ($user && password_verify($password, $user->getPassword())) {
+	if ($authentication && password_verify($password, $authentication->getPassword())) {
 		return get_renderer()->render($response, [
 			'authentication' => [
-				'user_id' => $user->getUserId(),
-				'token' => $user->getToken()
+				'user_id' => $authentication->getUserId(),
+				'token' => $authentication->getToken()
 			]
 		]);
 	} else {
@@ -25,9 +25,12 @@ $app->post('/login', function (ServerRequestInterface $request, ResponseInterfac
 
 $app->post('/register', function (ServerRequestInterface $request, ResponseInterface $response, $args) {
 	$data = $request->getParsedBody();
-	$mail = $data['email'];
+	$mail = filter_var($data['email'], FILTER_VALIDATE_EMAIL);
 	$password = $data['password'];
 
+	if (!$mail) {
+		return get_renderer()->renderAsError($response, 400, 'Malformed request', 'メールアドレスが正しい形式ではありません。');
+	}
 	$registered = \ORM\AuthenticationQuery::create()
 		->filterByEmail($mail)
 		->exists();
