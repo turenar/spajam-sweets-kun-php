@@ -129,6 +129,8 @@ function generate_field_schema($type)
 			return ['type' => 'number'];
 		case 'date':
 			return ['type' => 'string', 'format' => 'date'];
+		case 'time':
+			return ['type' => 'string', 'format' => 'time'];
 		default:
 			throw new Exception("Unknown spec type: $type");
 	}
