@@ -4,7 +4,7 @@ use Propel\Runtime\ActiveRecord\ActiveRecordInterface;
 use Propel\Runtime\Collection\ObjectCollection;
 
 const QUAD_KEY_LEVEL = 18;
-const SPAWN_RANDOMIZE_RANGE = 300;
+const SPAWN_RANDOMIZE_RANGE = 1000;
 const RANDOM_ROUND = 3;
 const TRANSACTION_PATIENCE = 10;
 
