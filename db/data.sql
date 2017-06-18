@@ -242,7 +242,7 @@ VALUES
 	(200, 3, 6, NULL, NULL, 4, 35.685732, 139.689006, '133002112301233200', 1, '2017-06-18 01:02:28');
 
 
-INSERT INTO likes (review_id, shop_id, liked_at)
+INSERT INTO likes (review_id, user_id, liked_at)
 VALUES
 	(1, 1, NULL),
 	(1, 2, NULL),
