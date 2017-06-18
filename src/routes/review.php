@@ -10,8 +10,8 @@ $app->post('/review/create', function (ServerRequestInterface $request, Response
 	$user = $request->getAttribute('user');
 
 	$shop_id = $data['shop_id'];
-	$rating = $data['rating'];
-	$review_text = $data['review_text'];
+	$rating = $data['rating'] ?? null;
+	$review_text = $data['review_text']??null;
 	$sweet_type = $data['sweet_type'];
 
 	$shop = \ORM\ShopQuery::create()
