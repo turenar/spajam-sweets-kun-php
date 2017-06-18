@@ -35,11 +35,8 @@ $app->get('/shop/{id:\d+}', function (ServerRequestInterface $request, ResponseI
 	if ($shop === null) {
 		return get_renderer()->renderAsError($response, 404, 'Not Found', '指定した店が見つかりません。');
 	}
-	$reviews = \ORM\ReviewQuery::create()
-		->filterByShopId($shop->getShopId())
-		->find();
 
-	return get_renderer()->render($response, ['shop' => $shop->render($reviews)]);
+	return get_renderer()->render($response, ['shop' => $shop->render()]);
 })->setArgument('validator.basePath', 'shop');
 
 $app->get('/shop/search', function (ServerRequestInterface $request, ResponseInterface $response, $args) {

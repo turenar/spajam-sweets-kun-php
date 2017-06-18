@@ -10,7 +10,7 @@ shop:
       type: float
     longitude:
       type: float
-    review:
-      +include: review.yaml
-      array: true
-      required: false
+#    review:
+#      +include: review.yaml
+#      array: true
+#      required: false

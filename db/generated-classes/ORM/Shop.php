@@ -17,7 +17,7 @@ use ORM\Base\Shop as BaseShop;
 class Shop extends BaseShop
 {
 
-	public function render($reviews = null)
+	public function render()
 	{
 		return [
 			'shop_id' => $this->getShopId(),
@@ -25,8 +25,6 @@ class Shop extends BaseShop
 			'address' => $this->getAddress(),
 			'latitude' => $this->getLatitude(),
 			'longitude' => $this->getLongitude(),
-
-			'review' => render_as_json($reviews),
 		];
 	}
 }
