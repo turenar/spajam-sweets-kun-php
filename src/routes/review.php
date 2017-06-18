@@ -33,8 +33,8 @@ $app->post('/review/create', function (ServerRequestInterface $request, Response
 		->setRating($rating)
 		->setReviewText($review_text)
 		->setSweetType($sweet_type)
-		->setLatitude($lat)
-		->setLongitude($long)
+		->setLatitude($randomized[0])
+		->setLongitude($randomized[1])
 		->setGeomHash($hash)
 		->setReviewedAt(time())
 		->save();
